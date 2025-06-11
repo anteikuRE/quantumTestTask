@@ -5,10 +5,12 @@ const { item } = defineProps(['item'])
 <template>
   <div class="card">
     <div class="card__content">
+      <RouterLink :to="'item/'+ item.id" >
       <div class="card__header">
         <h3>{{ item.name }}</h3>
         <h3 class="card__id">{{ item.id }}</h3>
       </div>
+      </RouterLink>
       <div class="card__specs__wrapper">
         <h4 v-for="specs in item.data">
 
