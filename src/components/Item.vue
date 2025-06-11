@@ -34,16 +34,20 @@ function Save() {
 }
 
 function Delete() {
-  const index = store.data.findIndex(item => item.id === route.params.id);
-  store.data.splice(index, 1);
-  router.push('/')
+  if (confirm('Are you sure you want to delete this item?')) {
+
+    const index = store.data.findIndex(item => item.id === route.params.id);
+    store.data.splice(index, 1);
+    router.push('/')
+  }
 }
 </script>
 
 <template>
   <div>
+    <RouterLink to="/">Home</RouterLink>
     <div style="text-align: center" v-if="isLoading">Loading...</div>
-    <div v-else class="card">
+    <div v-else class="item">
       <div class="card__content">
 
         <div class="card__header">
@@ -59,16 +63,61 @@ function Delete() {
           <input v-if="isEditing" @input="event => editedItem.data[key] = event.target.value" :value="specs">
         </div>
       </div>
-      <button v-if="!isEditing" @click="isEditing = true">Edit</button>
-      <button v-if="isEditing" @click="()=>{isEditing = false; Save()}">Save
-      </button>
-      <button v-if="isEditing" @click="isEditing = false">Cancel &Cross;</button>
-      <button @click="()=>{isEditing = false; Delete()}">Delete &Cross;</button>
-      <RouterLink to="/">Home</RouterLink>
+      <div class="item__controls">
+
+        <button v-if="!isEditing" @click="isEditing = true">Edit</button>
+        <button v-if="isEditing" @click="()=>{isEditing = false; Save()}">Save
+        </button>
+        <button v-if="isEditing" @click="isEditing = false">Cancel &Cross;</button>
+        <button style="background: maroon; border:1px solid maroon; margin-top: 10px"
+                @click="() => {  isEditing = false; Delete();  }"
+
+        >Delete &Cross;
+        </button>
+
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.item {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.item__controls {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  border-radius: 100px;
+  margin: 5px;
+  color: white;
+  padding: 12px 20px;
+  background: transparent;
+  border: 1px solid #2c3e50;
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: beige;
+  background: #2c3e50;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: 1px solid #2c3e50;
+  transition: all 300ms;
+  cursor: pointer;
+}
+
+button:hover {
+  background: transparent !important;
+}
 
 </style>

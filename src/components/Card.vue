@@ -5,7 +5,7 @@ const { item } = defineProps(['item'])
 <template>
   <div class="card">
     <div class="card__content">
-      <RouterLink :to="'item/'+ item.id" >
+      <RouterLink  :to="'item/'+ item.id" >
       <div class="card__header">
         <h3>{{ item.name }}</h3>
         <h3 class="card__id">{{ item.id }}</h3>
@@ -30,10 +30,6 @@ const { item } = defineProps(['item'])
   border: 1px solid #2c3e50;
   transition: all 300ms;
   cursor: pointer;
-}
-
-.card:hover {
-  background: transparent;
 }
 
 .card__header{
