@@ -1,5 +1,4 @@
-import {reactive, ref} from 'vue'
-// const isLoading = ref(true)
+import {reactive} from 'vue'
 
 export const store = reactive({
     data:[],

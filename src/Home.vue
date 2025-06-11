@@ -1,10 +1,26 @@
 <script setup>
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, computed} from 'vue'
 import Card from "@/components/Card.vue";
 import {store} from './store.js'
 
 const itemsAppearing = ref(10);
+const sortAscending = ref(true);
 
+const sortedData = ref(store.data);
+
+function applySort() {
+  sortedData.value = [...store.data]
+      .sort((a, b) => {
+        return sortAscending.value
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+      })
+      .slice(0, itemsAppearing.value);
+}
+function toggleSort() {
+  applySort();
+  sortAscending.value = !sortAscending.value;
+}
 function LoadMore() {
 
   itemsAppearing.value = store.data.length;
@@ -19,16 +35,31 @@ function LoadMore() {
 </script>
 
 <template>
+  <button class="load-btn" @click="toggleSort">
+
+    Sort by Name {{ sortAscending ? '↑' : '↓' }}
+  </button>
   <div style="text-align: center" v-if="store.isLoading">Loading...</div>
-  <div v-else v-for="item in store.data.slice(0, itemsAppearing)">
+    <div class="cards-list"  v-else>
+  <div  v-for="item in sortedData.slice(0, itemsAppearing)">
+
     <Card :item="item"/>
   </div>
+    </div>
   <div style="display: flex; justify-content: center">
     <button v-if="itemsAppearing !== store.data.length" class="load-btn" @click="LoadMore">Load More</button>
   </div>
 </template>
 
 <style scoped>
+@media (min-width: 1024px) {
+.cards-list{
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+
+}}
 .load-btn {
   font-size: 16px;
   color: beige;
